@@ -259,11 +259,79 @@ Private Repository로 설정하면 내부에서만 사용 가능
 
 ## 6. Docker Compose
 
-* **개념**: 여러 컨테이너를 한 번에 관리하는 도구
-* **활용 예시**:
+### 6.1 개념 
 
-  * `WordPress + Apache + MySQL` 멀티 컨테이너 서비스 실행
-  * 개발/운영 환경 분리 관리
+* 개발/운영 환경 분리 관리* Docker Compose는 **Docker 클라이언트 툴**로,
+  여러 컨테이너(서비스)를 하나의 YAML 파일(`docker-compose.yml`)로 정의하고
+  명령어 한 번으로 실행/종료할 수 있는 자동화 도구
+  
+ * 활용 예시 : `WordPress + Apache + MySQL` 멀티 컨테이너 서비스 실행
+
+* 정의할 수 있는 요소:
+
+  * 이미지(Image)
+  * 컨테이너(Container)
+  * 네트워크(Network)
+  * 볼륨(Volume)
+
+### 6.2 주요 명령어
+
+* **up**: 서비스 실행 (이미지 풀 + 컨테이너 생성 + 네트워크/볼륨 연결)
+
+  ```bash
+  docker-compose up -d
+  ```
+* **down**: 컨테이너/네트워크 종료 및 삭제 (이미지, 볼륨은 남김)
+
+  ```bash
+  docker-compose down
+  ```
+* **stop**: 컨테이너/네트워크 종료 (삭제는 안 함)
+
+  ```bash
+  docker-compose stop
+  ```
+
+### 6.3 Dockerfile과 차이
+
+* **Dockerfile**: 이미지 빌드 정의 파일
+* **Docker Compose**: 여러 컨테이너 서비스 실행 정의 파일
+
+### 6.4 Kubernetes와 차이
+
+* Compose: 단일 서버/개발·테스트 환경에 적합
+* Kubernetes: 멀티 서버, 자동 확장, 운영 환경 적합
+
+### 6.5 설치 및 파일명
+
+* Docker Engine과는 별개 소프트웨어 (클라이언트 툴)
+* 최근 Docker Desktop에는 기본 포함
+* 기본 파일명: `docker-compose.yml`
+* 다른 파일명 사용 시 `-f` 옵션 필요
+
+  ```bash
+  docker-compose -f docker-compose.dev.yml up
+  ```
+
+### 6.6 Docker Compose 활용 범위
+
+### ✅ 적합한 경우
+
+* Jenkins, SonarQube, Grafana, Prometheus 같은 **보조 서비스 실행**
+* 단일 서버에서 여러 컨테이너를 한 번에 실행해야 하는 **개발/테스트 환경**
+* 빠른 PoC(Proof of Concept) 또는 로컬 개발 환경 구성
+
+### ⚠️ 한계점 (실제 서비스 운영 시)
+
+* 멀티 서버 확장(스케일 아웃) 불가
+* 노드 장애 복구 자동화 없음
+* 컨테이너 상태 관리 및 헬스체크 자동화 부족
+* 고가용성, 무중단 배포 등 운영 환경에서 필요한 기능 부족
+
+### 🚀 대안
+
+* **운영(Production) 환경**에서는 Kubernetes, Docker Swarm 같은 컨테이너 오케스트레이션 도구 사용 권장
+* Docker Compose는 **개발·테스트용 자동화 툴**로 활용하는 것이 일반적
 
 ---
 
@@ -279,11 +347,11 @@ Private Repository로 설정하면 내부에서만 사용 가능
 * **Docker Hub**: 대표적인 공개 레지스트리, 이미지 업로드/다운로드 가능
 * **Private Registry**: 사내 전용 이미지 저장소, `docker registry` 컨테이너로 구축 가능
 * **이미지 업로드**: `docker tag` → `docker push`
+* **Docker Compose**: YAML 기반 다중 컨테이너 실행 자동화 도구 (개발/테스트 환경 적합)
 
 ---
 
 ✍️ *정리자: 7AAB*
 📅 *최종 업데이트: 2025-08-27*
 
-```
 ---
