@@ -281,10 +281,16 @@ Private Repository로 설정하면 내부에서만 사용 가능
   ```bash
   docker-compose up -d
   ```
-* **down**: 컨테이너/네트워크 종료 및 삭제 (이미지, 볼륨은 남김)
-
+* **down**  
+  - 실행 중인 컨테이너와 네트워크를 종료 후 **삭제**  
+  - 단, **이미지와 볼륨은 기본적으로 삭제되지 않음**  
+  - 필요 시 옵션을 추가해야 함:
+    - `--volumes` : 볼륨까지 삭제  
+    - `--rmi all` : 관련 이미지까지 삭제  
   ```bash
   docker-compose down
+  docker-compose down --volumes
+  docker-compose down --rmi al
   ```
 * **stop**: 컨테이너/네트워크 종료 (삭제는 안 함)
 
