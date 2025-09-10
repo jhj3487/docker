@@ -339,6 +339,69 @@ Private Repository로 설정하면 내부에서만 사용 가능
 * **운영(Production) 환경**에서는 Kubernetes, Docker Swarm 같은 컨테이너 오케스트레이션 도구 사용 권장
 * Docker Compose는 **개발·테스트용 자동화 툴**로 활용하는 것이 일반적
 
+
+
+### 6.7 Docker Compose 작성 규칙 및 파일 구조
+
+Docker Compose 설정 파일(`docker-compose.yml`)을 작성할 때 알아두어야 할 **기본 규칙**과 **구조**를 정리했습니다.
+
+---
+
+#### 📌 기본 파일명
+- **기본 파일명**: `docker-compose.yml`
+- 다른 파일명을 사용할 경우 `-f` 옵션 필요:
+  ```bash
+  docker-compose -f custom-compose.yml up -d
+  ```
+- 특별한 이유가 없다면 **기본 파일명 사용 권장**
+
+---
+
+#### 🏗 파일 기본 구조
+
+```yaml
+version: '3.8'    # Compose yaml 포맷 버전
+
+services:         # 컨테이너 설정
+  apptest001:
+    image: myapp:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.5
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=testdb
+    volumes:
+      - db_data:/var/lib/mysql
+
+networks:         # 네트워크 정의
+  default:
+    driver: bridge
+
+volumes:          # 볼륨 정의
+  db_data:
+```
+
+---
+
+#### 📝 YAML 작성 규칙
+
+| 규칙 | 설명 | 예시 |
+|------|------------------------------|------------------|
+| 1 | `version`은 **파일 최상단**에 작성 | `version: '3.8'` |
+| 2 | 주 항목은 **4가지** | `version`, `services`, `networks`, `volumes` |
+| 3 | **공백**만 사용 (Tab ❌) | 스페이스 2칸 또는 4칸 |
+| 4 | **같은 계층은 동일한 들여쓰기 사용** | 같은 계층에서는 반드시 동일한 들여쓰기를 사용 |
+| 5 | **하위 설정은 상위 항목 들여쓰기의 배수로 작성** | 상위 2칸 → 하위 4칸 또는 6칸 |
+| 6 | 여러 개 나열 시 `-` 하이픈 사용 | `ports: \n  - "8080:8080"` |
+| 7 | `:` 콜론 뒤에는 반드시 **공백 한 칸** | `image: myapp:latest` |
+| 8 | `#` 뒤는 주석 처리 | `# DB 설정` |
+| 9 | 문자열은 `'작은따옴표'` 또는 `"큰따옴표"` 사용 가능 | `"8080:8080"` |
+
 ---
 
 ## 🔑 핵심 키워드 요약
