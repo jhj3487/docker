@@ -404,6 +404,53 @@ volumes:          # 볼륨 정의
 
 ---
 
+### 6.8 Docker Compose 명령어
+
+#### 📌 기본 실행 구조
+```bash
+docker-compose -f <도커-컴포즈-파일-경로> <명령어> [옵션]
+```
+
+---
+
+#### (1) **up** – 서비스 실행
+```bash
+docker-compose -f docker-compose.yml up -d
+```
+- 이미지 다운로드 (없으면 자동 pull)  
+- 컨테이너 생성 및 실행  
+- 네트워크 생성  
+- 볼륨 생성  
+
+옵션:
+- `-d` : 백그라운드(detached) 실행  
+- `--build` : 이미지 새로 빌드 후 실행  
+
+---
+
+#### (2) **down** – 서비스 종료 및 삭제
+```bash
+docker-compose -f docker-compose.yml down
+```
+- 실행 중인 컨테이너 삭제  
+- 네트워크 삭제  
+
+추가 옵션:
+- `--volumes` : 볼륨까지 삭제  
+- `--rmi all` : 관련 이미지까지 삭제  
+
+---
+
+#### (3) **stop** – 컨테이너 정지
+```bash
+docker-compose -f docker-compose.yml stop
+```
+- 실행 중인 컨테이너만 종료  
+- 네트워크/볼륨/이미지는 유지  
+
+---
+
+
 ## 🔑 핵심 키워드 요약
 
 * **파일 복사**: `docker cp`
